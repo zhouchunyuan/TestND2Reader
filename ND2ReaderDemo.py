@@ -17,15 +17,17 @@ with ND2Reader('test.nd2') as images:
     
     matplotlib.image.imsave('name.png', images[0])# here save as PNG
 
-
-    appinfo = images.parser._raw_metadata.app_info
+    rawMetaData = images.parser._raw_metadata
+    lut         = rawMetaData.lut_data
+    #print(lut) #lut is a complicated block of xml
+    appinfo     = rawMetaData.app_info
     # the raw metadata is retrieved by parser._raw_metadata
     # the contents is orderedDict, created from xml structure
     # So I have to use cascade [] to access an item
     ver = appinfo['variant']['no_name']['m_VersionString']['@value']
     print(ver)# this is to detect NIS-Elements version
 
-    li = images.parser._raw_metadata.image_metadata_sequence
+    li = rawMetaData.image_metadata_sequence
     metadata = li[b'SLxPictureMetadata']# this is a one-item dict
     # Howevr, the value in this item is a list which is very long
     # here we can obtain the objective name and also almost all important infomation.
